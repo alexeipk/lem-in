@@ -60,6 +60,7 @@ errors:
 	./lem-in < ./maps/dup_start.map
 	./lem-in < ./maps/no_end.map
 	./lem-in < ./maps/dup_end.map
+	./lem-in < ./maps/one_room.map
 
 bonus: $(OBJB)
 	@echo "\033[0;32m\n\nCompiling lem-in (with bonuses)..."
