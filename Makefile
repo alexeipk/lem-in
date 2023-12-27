@@ -53,7 +53,7 @@ run:
 	./lem-in < ./maps/subject1.map
 
 errors:
-	@make re
+	@make re 
 	./lem-in < ./maps/no_ants.map
 	./lem-in < ./maps/dup_ants.map
 	./lem-in < ./maps/no_start.map

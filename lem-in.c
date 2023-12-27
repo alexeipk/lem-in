@@ -7,7 +7,8 @@ int			main(void) {
 	ah = (t_anthill *)malloc(sizeof(t_anthill));
 
 	//Reset: initialize struct
-	ah->ants = 0;
+	ah->qants = 0;
+	ah->qrooms = 0;
 
 	//Print for tests, must be erase REM
 	/*
@@ -19,8 +20,8 @@ int			main(void) {
 	int 	fd = STDIN_FILENO;  // Use STDIN_FILENO para ler da entrada padrão (teclado)
     char 	buffer[BUFFER_SIZE];
     ssize_t bytesRead;
-    char 	linha[BUFFER_SIZE];
-    ssize_t linhaIndex = 0;
+    char 	line[BUFFER_SIZE];
+    ssize_t row_index = 0;
 	int 	row_just_numbers = 1;
 	int		qtd_ants_file = 0;
 	int 	mark_start = 0;
@@ -28,29 +29,34 @@ int			main(void) {
 
     while ((bytesRead = read(fd, buffer, sizeof(buffer))) > 0) {
         for (ssize_t i = 0; i < bytesRead; i++) {
-            // Imprime caractere por caractere até encontrar uma quebra de linha
+            // Imprime caractere por caractere até encontrar uma quebra de line
             if (buffer[i] == '\n') {
 				if (row_just_numbers) 
-					qtd_ants_file++; //printf("LINHA\n");  // Imprime a linha que contém apenas um número
+					qtd_ants_file++; //printf("line\n");  // Imprime a line que contém apenas um número
                 
 
-				linha[linhaIndex] = '\0';  // Adiciona o caractere nulo para formar a string
+				line[row_index] = '\0';  // Adiciona o caractere nulo para formar a string
                 
-				//if (ft_strnequ(*linha, "##start\n", 8))
+				//if (ft_strnequ(*line, "##start\n", 8))
 				//	mark_start++;
-				//printf("%d\n", (!ft_strcmp("##start\n", linha)));
-				if (!ft_strncmp("##start", linha, 7))
+				//printf("%d\n", (!ft_strcmp("##start\n", line)));
+				if (!ft_strncmp("##start", line, 7))
 					mark_start++;
 
-				if (!ft_strncmp("##end", linha, 5))
+				if (!ft_strncmp("##end", line, 5))
 					mark_end++;
+				
+				//printf("%d\n", ft_count_spaces(line));
+				//printf("%d\n", ah->qrooms);
+				if (ft_count_spaces(line) == 2)
+					ah->qrooms++;
 
-				//printf("%s\n", linha);    // Imprime a linha
-				ah->ants = ft_atoi(linha);
+				//printf("%s\n", line);    // Imprime a line
+				ah->qants = ft_atoi(line);
 				row_just_numbers = 1;
-                linhaIndex = 0;            // Reinicia o índice para a próxima linha
+                row_index = 0;            // Reinicia o índice para a próxima line
             } else {
-                linha[linhaIndex++] = buffer[i];
+                line[row_index++] = buffer[i];
 				//printf("%d\n", buffer[i]);
 				//printf("%d\n", ft_isdigit(buffer[i]));
 				//if (buffer[i] != '\n' && buffer[i] != '\v' && buffer[i] != '\r' && buffer[i] != '\0') {
@@ -95,8 +101,16 @@ int			main(void) {
 		return 0;
 	}
 
+
+	//m->rooms = (char**)ft_memalloc(sizeof(char*) * (m->q_rooms + 1));
+
 	write(1, "Ants: ", 6);
-	ft_putnbr(ah->ants);
+	ft_putnbr(ah->qants);
+	write(1, "\n", 1);
+
+	
+	write(1, "Rooms: ", 7);
+	ft_putnbr(ah->qrooms);
 	write(1, "\n", 1);
 
 	free(ah);

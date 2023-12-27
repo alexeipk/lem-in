@@ -10,8 +10,9 @@
 #define BUFFER_SIZE 1000
 
 typedef struct s_anthill {
-	int 	ants; // qtd of ants
-	char	*line;
+	int 	qants; // qtd of ants
+	int 	qrooms; //qtd of rooms
+	//char	*line;
 }		t_anthill;
 
 
@@ -19,6 +20,7 @@ void			ft_putnbr(int n);
 int				ft_isdigit(int c);
 int				ft_atoi(const char *str);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
+int 			ft_count_spaces(const char *r);
 
 //static void		get_data(t_anthill *ah);
 

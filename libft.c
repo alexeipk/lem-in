@@ -80,3 +80,15 @@ int		ft_strnequ(char const *s1, char const *s2, size_t n)
 	else
 		return (0);
 }
+
+int ft_count_spaces(const char *r) {
+    int count = 0;
+
+    for (int i = 0; r[i] != '\0'; i++) {
+        if (r[i] == ' ') {
+            count++;
+        }
+    }
+
+    return count;
+}
