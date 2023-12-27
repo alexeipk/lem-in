@@ -50,7 +50,16 @@ re: fclean all
 
 run:
 	@make re
-	./lem-in < subject1.map
+	./lem-in < ./maps/subject1.map
+
+errors:
+	@make re
+	./lem-in < ./maps/no_ants.map
+	./lem-in < ./maps/dup_ants.map
+	./lem-in < ./maps/no_start.map
+	./lem-in < ./maps/dup_start.map
+	./lem-in < ./maps/no_end.map
+	./lem-in < ./maps/dup_end.map
 
 bonus: $(OBJB)
 	@echo "\033[0;32m\n\nCompiling lem-in (with bonuses)..."

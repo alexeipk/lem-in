@@ -1,6 +1,6 @@
 
 #include <unistd.h> // To write function
-
+#include <stdio.h>
 
 
 void	ft_putnbr(int n)
@@ -55,4 +55,28 @@ int	ft_atoi(const char *str) {
 		index++;
 	}
 	return (res * sign);
+}
+
+int		ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t	i;
+
+	if (n <= 0)
+		return (0);
+	i = 0;
+	while (s1[i] && s2[i] && i < n - 1 && s1[i] == s2[i])
+		i++;
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+}
+
+int		ft_strnequ(char const *s1, char const *s2, size_t n)
+{
+	if (!s1 && !s2)
+		return (1);
+	if (!s1 || !s2 || n <= 0)
+		return (0);
+	if (ft_strncmp(s1, s2, n) == 0)
+		return (1);
+	else
+		return (0);
 }
