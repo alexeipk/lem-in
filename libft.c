@@ -86,11 +86,21 @@ int ft_count_spaces(const char *r) {
     int count = 0;
 
     for (int i = 0; r[i] != '\0'; i++) {
-        if (r[i] == ' ') {
+        if (r[i] == ' ')
             count++;
-        }
     }
 
+    return count;
+}
+
+
+int ft_count_hyphen(const char *r) {
+    int count = 0;
+
+    for (int i = 0; r[i] != '\0'; i++) {
+        if (r[i] == '-')
+            count++;
+    }
     return count;
 }
 
@@ -127,3 +137,44 @@ char	*ft_strdup(const char *s1)
 	return (s2);
 }
 
+char *ft_strchr(const char *str, int ch) {
+    while (*str != '\0' && *str != ch) {
+        str++;
+    }
+
+    return (*str == ch) ? (char *)str : NULL;
+}
+
+char *ft_strtok(char *str, const char *delim) {
+    static char *nextToken = NULL;
+
+    if (str != NULL) {
+        nextToken = str;
+    } else if (nextToken == NULL) {
+        return NULL; // Nada para tokenizar
+    }
+
+    // Encontrar o início do próximo token
+    char *start = nextToken;
+    while (*nextToken != '\0' && ft_strchr(delim, *nextToken) != NULL) {
+        nextToken++;
+    }
+
+    if (*nextToken == '\0') {
+        nextToken = NULL; // Nenhum token restante
+        return NULL;
+    }
+
+    // Encontrar o fim do token
+    //char *end = nextToken;
+    while (*nextToken != '\0' && ft_strchr(delim, *nextToken) == NULL) {
+        nextToken++;
+    }
+
+    if (*nextToken != '\0') {
+        *nextToken = '\0'; // Terminar o token
+        nextToken++;
+    }
+
+    return start;
+}

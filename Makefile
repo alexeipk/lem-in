@@ -49,7 +49,7 @@ fclean:
 re: fclean all
 
 run:
-	@make re
+	@make re 
 	./lem-in < ./maps/subject1.map
 
 errors:
@@ -61,6 +61,14 @@ errors:
 	./lem-in < ./maps/no_end.map
 	./lem-in < ./maps/dup_end.map
 	./lem-in < ./maps/one_room.map
+	./lem-in < ./maps/dup_rooms.map
+
+m:
+	@make errors 
+	@make run 
+
+# 2>&1 | grep -v "Leaving directory" | grep -v "Entering directory" #| grep -v "make"
+# quando tira o #, deixa de aparecer os resultados certos REM
 
 bonus: $(OBJB)
 	@echo "\033[0;32m\n\nCompiling lem-in (with bonuses)..."
