@@ -37,7 +37,7 @@ int			main(void) {
 	int		mark_end = 0;
 	int 	previous_start_end = 0;
 
-
+	//parse file and insert values into struct
     while ((bytesRead = read(fd, buffer, sizeof(buffer))) > 0) {
         for (ssize_t i = 0; i < bytesRead; i++) { // Build chars until find next line 
             if (buffer[i] == '\n') {
@@ -197,14 +197,96 @@ int			main(void) {
     int caminho[N];
 
     printf("Caminhos possíveis de %d para %d:\n", origem, destino);
-    gerar_caminhos(ah, matriz_de_caminhos, origem, destino, visitados, caminho, 0);
+    do_paths(ah, matriz_de_caminhos, origem, destino, visitados, caminho, 0);
     printf("Total de caminhos %d:\n", ah->qpaths);
+
+	//removeDuplicatePaths(ah);
 
 	for (int i = 0; i < ah->qpaths; i++) {
         printf("%s\n", ah->paths[i]);
     }
 
+	for (int i = 0; i < ah->qpaths; i++) {
+		int *vetor = NULL;
+		// Usando strtok para dividir a string em tokens
+		char *one = ft_strdup(ah->paths[i]);
+		char *token = ft_strtok(one, " ");
+		int indice = 0;
 
+		// Convertendo cada token para um número inteiro e redimensionando o vetor
+		while (token != NULL) {
+			// Alocação inicial ou realocação do vetor
+			vetor = (int *)realloc(vetor, (indice + 1) * sizeof(int));
+
+			if (vetor == NULL) {
+				fprintf(stderr, "Erro ao alocar memória.\n");
+				exit(EXIT_FAILURE);
+			}
+
+			vetor[indice] = atoi(token);
+			indice++;
+			token = ft_strtok(NULL, " ");
+		}
+
+		// Iterando pelo vetor e imprimindo os valores
+		for (int i = 0; i < indice; i++) {
+			printf("%d\n", vetor[i]);
+		}
+
+		// Liberando a memória alocada
+		free(vetor);
+		free(one);
+	}
+
+
+/*
+	for (int i = 0; i < ah->qpaths - 1; i++) {
+        char *first_copy = ft_strdup(ah->paths[i]); 
+        char *first = ft_strtok(first_copy, " ");
+		int lfirst = 0;
+
+		while (first != NULL) {
+			lfirst++;
+			first = ft_strtok(NULL, " ");
+		}
+
+		char *second_copy = ft_strdup(ah->paths[i + 1]); 
+        char *second = ft_strtok(second_copy, " ");
+		int lsecond = 0;
+
+		while (second != NULL) {
+			lsecond++;
+			second = ft_strtok(NULL, " ");
+		}
+
+    	printf("Número de linhas (tokens): %d-%d\n", lfirst, lsecond);
+
+		int maxnumb = (lfirst < lsecond) ? lfirst : lsecond;
+		printf("Número de linhas %d\n", maxnumb);
+        
+		first = ft_strtok(first_copy, " ");
+		second = ft_strtok(second_copy, " ");
+		//printf("Valores de linhas (tokens): %c-%c\n", first[0], second[0]);
+
+        for (int c = 0; c < maxnumb; c++) {
+			if (first[c] != '\0' && second[c] != '\0') {
+				printf("Valores de linhas (tokens): %c-%c\n", first[c], second[c]);
+			} else {
+				// Lida com a situação onde uma das strings é mais curta
+				// ou onde '\0' é encontrado
+				printf("Valores de linhas (tokens): -\n");
+			}
+		}
+
+        // Liberar memória alocada
+        free(first_copy);
+		free(second_copy);
+	}
+	*/
+
+	for (int i = 0; i < ah->qpaths; i++) {
+        printf("%s\n", ah->paths[i]);
+    }
 
 
 	kill_all(ah);
@@ -213,22 +295,45 @@ int			main(void) {
 
 
 
+/*
+void removeDuplicatePaths(t_anthill* ah) {
+    for (int i = 0; i < ah->qpaths - 1; i++) {
+        for (int j = i + 1; j < ah->qpaths; j++) {
+            // Comparando as linhas i e j
+            if (strcmp(ah->paths[i], ah->paths[j]) == 0) {
+                // Se as linhas são iguais, remova a menor delas
+                // (você pode adicionar sua lógica para determinar qual é a menor)
+                if (strlen(ah->paths[i]) > strlen(ah->paths[j])) {
+                    // A linha j é menor, então podemos liberar a memória e definir para NULL
+                    free(ah->paths[j]);
+                    ah->paths[j] = NULL;
+                } else {
+                    // A linha i é menor ou ambas têm o mesmo comprimento, então liberamos a memória da linha i
+                    free(ah->paths[i]);
+                    ah->paths[i] = NULL;
+                }
+            }
+        }
+    }
+}
+*/
+
 
 
 
 // Função recursiva para gerar todas as combinações possíveis de caminhos
-void gerar_caminhos(t_anthill *ah, int matriz[N][N], int atual, int destino, int visitados[N], int caminho[], int index) {
+void do_paths(t_anthill *ah, int matriz[N][N], int atual, int destino, int visitados[N], int caminho[], int index) {
     visitados[atual] = 1;
     caminho[index] = atual;
 
     if (atual == destino) {
 		ah->qpaths++;
-		//printf("%d ", ah->qpaths);
-		ah->paths[ah->qpaths - 1] = (char *)malloc((index * 2) * sizeof(char));  // Ajuste o tamanho conforme necessário
+		//printf("index %d \n", index);
+		ah->paths[ah->qpaths - 1] = (char *)malloc(((index + 2) * 2) * sizeof(char));  // Ajuste o tamanho conforme necessário
 		ah->paths[ah->qpaths - 1][0] = '\0';
 		for (int i = 0; i < index; i++) {
 			//printf("%d ", caminho[i]);
-			char temp[100];
+			char temp[BUFFER_SIZE];
 			ft_intToStr(caminho[i], temp);
             //sprintf(temp, "%d", caminho[i]);
             
@@ -237,14 +342,17 @@ void gerar_caminhos(t_anthill *ah, int matriz[N][N], int atual, int destino, int
 				ft_strcat(ah->paths[ah->qpaths - 1], " ");
 			}
 			ft_strcat(ah->paths[ah->qpaths - 1], temp);
-
 			//ah->paths[ah->qpaths] = ft_itoa(caminho[i]);
 		}
+		char temp[BUFFER_SIZE];
+		ft_strcat(ah->paths[ah->qpaths - 1], " ");
+		ft_intToStr(N - 1, temp);
+		ft_strcat(ah->paths[ah->qpaths - 1], temp);
 		//printf("\n");
     } else {
         for (int i = 0; i < N; i++) {
             if (matriz[atual][i] == 1 && !visitados[i]) {
-                gerar_caminhos(ah, matriz, i, destino, visitados, caminho, index + 1);
+                do_paths(ah, matriz, i, destino, visitados, caminho, index + 1);
             }
         }
     }
