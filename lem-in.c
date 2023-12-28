@@ -181,7 +181,7 @@ int			main(void) {
 	
 
 
-	 int matriz_de_caminhos[N][N] = {
+	int matriz_de_caminhos[N][N] = {
         {0, 1, 1, 0, 0, 0},
         {0, 0, 1, 1, 0, 0},
         {0, 1, 0, 0, 1, 0},
@@ -200,7 +200,9 @@ int			main(void) {
     gerar_caminhos(ah, matriz_de_caminhos, origem, destino, visitados, caminho, 0);
     printf("Total de caminhos %d:\n", ah->qpaths);
 
-
+	for (int i = 0; i < ah->qpaths; i++) {
+        printf("%s\n", ah->paths[i]);
+    }
 
 
 
@@ -208,6 +210,62 @@ int			main(void) {
 	kill_all(ah);
 	return 0;
 }
+
+
+
+
+
+
+// Função recursiva para gerar todas as combinações possíveis de caminhos
+void gerar_caminhos(t_anthill *ah, int matriz[N][N], int atual, int destino, int visitados[N], int caminho[], int index) {
+    visitados[atual] = 1;
+    caminho[index] = atual;
+
+    if (atual == destino) {
+		ah->qpaths++;
+		//printf("%d ", ah->qpaths);
+		ah->paths[ah->qpaths - 1] = (char *)malloc((index * 2) * sizeof(char));  // Ajuste o tamanho conforme necessário
+		ah->paths[ah->qpaths - 1][0] = '\0';
+		for (int i = 0; i < index; i++) {
+			//printf("%d ", caminho[i]);
+			char temp[100];
+			ft_intToStr(caminho[i], temp);
+            //sprintf(temp, "%d", caminho[i]);
+            
+            // Adiciona o elemento seguido por um espaço, exceto no último elemento
+           if (ah->paths[ah->qpaths - 1][0] != '\0') {
+				ft_strcat(ah->paths[ah->qpaths - 1], " ");
+			}
+			ft_strcat(ah->paths[ah->qpaths - 1], temp);
+
+			//ah->paths[ah->qpaths] = ft_itoa(caminho[i]);
+		}
+		//printf("\n");
+    } else {
+        for (int i = 0; i < N; i++) {
+            if (matriz[atual][i] == 1 && !visitados[i]) {
+                gerar_caminhos(ah, matriz, i, destino, visitados, caminho, index + 1);
+            }
+        }
+    }
+
+    visitados[atual] = 0; // Desmarca o nó atual ao retroceder na recursão
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 int kill_all(t_anthill *ah) {
     for (int i = 0; i < ah->qrooms; i++) // Libera a memória alocada para o vetor de strings
@@ -222,6 +280,8 @@ int kill_all(t_anthill *ah) {
         free(ah->links[i]);
 	free(ah->links); // Libera a memória alocada para o vetor de strings
 
+	for (int i = 0; i < ah->qpaths; i++) // Libera a memória alocada para o vetor de strings
+        free(ah->paths[i]);
 	free(ah->paths); // Libera a memória alocada para o vetor de strings
 	//free(ah->start_room); 
 	//free(ah->end_room); 
@@ -256,32 +316,3 @@ void valid_msg(t_anthill *ah, int code) {
 
 
 
-
-
-// Função para imprimir um caminho
-void imprimir_caminho(int caminho[], int tamanho) {
-    for (int i = 0; i < tamanho; i++) {
-        printf("%d ", caminho[i]);
-    }
-    printf("\n");
-}
-
-// Função recursiva para gerar todas as combinações possíveis de caminhos
-void gerar_caminhos(t_anthill *ah, int matriz[N][N], int atual, int destino, int visitados[N], int caminho[], int index) {
-    visitados[atual] = 1;
-    caminho[index] = atual;
-
-    if (atual == destino) {
-        imprimir_caminho(caminho, index + 1);
-		ah->qpaths++;
-		//printf("%d ", ah->qpaths);
-    } else {
-        for (int i = 0; i < N; i++) {
-            if (matriz[atual][i] == 1 && !visitados[i]) {
-                gerar_caminhos(ah, matriz, i, destino, visitados, caminho, index + 1);
-            }
-        }
-    }
-
-    visitados[atual] = 0; // Desmarca o nó atual ao retroceder na recursão
-}

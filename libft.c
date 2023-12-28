@@ -178,3 +178,111 @@ char *ft_strtok(char *str, const char *delim) {
 
     return start;
 }
+
+/*
+int	ft_size(int n)
+{
+	int	size;
+
+	size = 1;
+	if (n > 0)
+		size = 0;
+	return (size);
+}
+
+long	ft_abs(long n)
+{
+	long	abs;
+
+	abs = n;
+	if (n < 0)
+		abs = -n;
+	return (abs);
+}
+
+size_t	ft_size2(size_t size2, int nbr2)
+{
+	while (nbr2)
+	{
+		nbr2 /= 10;
+		size2++;
+	}
+	return (size2);
+}
+
+char	*ft_itoa(int nbr)
+{
+	char	*str;
+	long	n;
+	size_t	size;
+
+	n = nbr;
+	size = ft_size(nbr);
+	n = ft_abs(n);
+	size = ft_size2(size, nbr);
+	str = (char *)malloc(size + 1);
+	if (!str)
+		return (0);
+	*(str + size--) = '\0';
+	while (n > 0)
+	{
+		*(str + size--) = n % 10 + '0';
+		n /= 10;
+	}
+	if (size == 0 && str[1] == '\0')
+		*(str + size) = '0';
+	else if (size == 0 && str[1] != '\0')
+		*(str + size) = '-';
+	return (str);
+}*/
+
+void ft_intToStr(int num, char *str) {
+    int i = 0;
+
+    // Lidar com o caso especial de 0
+    if (num == 0) {
+        str[0] = '0';
+        str[1] = '\0';
+        return;
+    }
+
+    // Lidar com números negativos
+    if (num < 0) {
+        str[i++] = '-';
+        num = -num;
+    }
+
+    // Converter cada dígito do número para um caractere na string
+    int divisor = 1;
+    while (num / divisor > 9) {
+        divisor *= 10;
+    }
+
+    while (divisor > 0) {
+        int digit = num / divisor;
+        str[i++] = digit + '0';
+        num %= divisor;
+        divisor /= 10;
+    }
+
+    // Adicionar o caractere nulo no final da string
+    str[i] = '\0';
+}
+
+
+void ft_strcat(char *dest, const char *src) {
+    // Encontrar o final da string de destino
+    while (*dest != '\0') {
+        dest++;
+    }
+
+    // Copiar os caracteres da string de origem para a string de destino
+    while (*src != '\0') {
+        *dest = *src;
+        dest++;
+        src++;
+    }
+
+    // Adicionar o caractere nulo no final da string de destino
+    *dest = '\0';
+}
