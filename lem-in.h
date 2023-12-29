@@ -9,6 +9,7 @@
 #include <stdbool.h> // To boolean
 
 #define N 4 // Número total de nós
+//extern int N;
 
 
 #define BUFFER_SIZE 4096
@@ -18,6 +19,7 @@ typedef struct 	s_anthill {
 	int 		qrooms; 	// qtd of rooms
 	char 		**rooms; 	// rooms list
 	char 		**se_rooms;	// start and end rooms list index
+	//char 		**sort_rooms; 	// rooms list
 	int 		qlinks; 	// qtd of links
 	char 		**links; 	// links list
 	int 		qpaths; 	// qtd of paths

@@ -1,6 +1,6 @@
 #include "lem-in.h"
 
-
+//int N = 0;
 
 int			main(void) {
 	t_anthill	*ah;	//Assign anthill structure
@@ -100,6 +100,9 @@ int			main(void) {
         }
     }
 
+	//N = 4;
+
+	
 	//Validations
 	if (qtd_ants_file == 0) {valid_msg(ah, 1); return 0;}
 	if (qtd_ants_file > 1) {valid_msg(ah, 2); return 0;}
@@ -168,6 +171,37 @@ int			main(void) {
 		}
     }
 
+	//Do rooms sort: start - other - end
+	char **sort_rooms = (char**)malloc(sizeof(char*) * ah->qrooms);
+	for (int i = 0; i < ah->qrooms; i++) {
+        if (ft_atoi(ah->se_rooms[i]) == 1) {
+			char *temp = strdup(ah->rooms[i]);
+			char *first = strtok(temp, " ");
+			sort_rooms[0] = strdup(first);
+			free(temp); 
+			break; 
+		}
+    }
+	int index_sort = 1;
+	for (int i = 0; i < ah->qrooms; i++) {
+        if (ft_atoi(ah->se_rooms[i]) == 0) {
+			char *temp = strdup(ah->rooms[i]);
+			char *first = strtok(temp, " ");
+			sort_rooms[index_sort] = strdup(first);
+			index_sort++;
+			free(temp); 
+		}
+    }
+	for (int i = 0; i < ah->qrooms; i++) {
+        if (ft_atoi(ah->se_rooms[i]) == 2) {
+			char *temp = strdup(ah->rooms[i]);
+			char *first = strtok(temp, " ");
+			sort_rooms[ah->qrooms - 1] = strdup(first);
+			free(temp); 
+		}
+    }
+	for (int i = 0; i < ah->qrooms; i++) printf("Sort rooms: %s\n", sort_rooms[i]);
+
 
 
 
@@ -178,8 +212,12 @@ int			main(void) {
 	for (int i = 0; i < ah->qlinks; i++) {
         printf("%s\n", ah->links[i]);
     }
-	
 
+
+
+
+	
+	
 
 	/*int matriz_de_caminhos[N][N] = {
         {0, 1, 1, 0, 0, 0},
@@ -195,6 +233,7 @@ int			main(void) {
         {0, 0, 0, 1},
         {0, 0, 0, 0},
     };
+	//N = 4;
 
     int origem = 0;
     int destino = N - 1;
@@ -269,7 +308,11 @@ int			main(void) {
     }
 
 
+	for (int i = 0; i < ah->qrooms; i++) // Libera a memória alocada para o vetor de strings
+        free(sort_rooms[i]);
+    free(sort_rooms); // Libera a memória alocada para o vetor de strings
 	kill_all(ah);
+
 	return 0;
 }
 
@@ -349,6 +392,7 @@ int kill_all(t_anthill *ah) {
     //    free(ah->se_rooms[i]);
     free(ah->se_rooms); // Libera a memória alocada para o vetor de strings
 
+	
 	for (int i = 0; i < ah->qlinks; i++) // Libera a memória alocada para o vetor de strings
         free(ah->links[i]);
 	free(ah->links); // Libera a memória alocada para o vetor de strings
