@@ -3,7 +3,7 @@ CC = clang
 CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 HEADER = lem-in.h
 
-SRC = lem-in.c libft.c # gnl.c #\
+SRC = lem-in.c libft.c aux_func.c #\
 	  validate.c \
 	  operations.c \
 	  sort.c \
