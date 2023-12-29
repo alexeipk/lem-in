@@ -8,7 +8,7 @@
 #include <stddef.h> // To size_t
 #include <stdbool.h> // To boolean
 
-#define N 6 // Número total de nós
+#define N 4 // Número total de nós
 
 
 #define BUFFER_SIZE 4096

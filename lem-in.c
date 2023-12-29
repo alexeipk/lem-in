@@ -181,13 +181,19 @@ int			main(void) {
 	
 
 
-	int matriz_de_caminhos[N][N] = {
+	/*int matriz_de_caminhos[N][N] = {
         {0, 1, 1, 0, 0, 0},
         {0, 0, 1, 1, 0, 0},
         {0, 1, 0, 0, 1, 0},
         {0, 0, 1, 0, 0, 1},
         {0, 0, 0, 1, 0, 1},
 		{0, 0, 0, 0, 0, 0}
+    };*/
+	int matriz_de_caminhos[N][N] = {
+        {0, 1, 0, 0},
+        {0, 0, 1, 0},
+        {0, 0, 0, 1},
+        {0, 0, 0, 0},
     };
 
     int origem = 0;
@@ -231,7 +237,7 @@ int			main(void) {
 		}
 
 		int max_iter = i1 < i2 ? i1 : i2;
-		printf("i1:%d - i2:%d - maxiter:%d\n", i1, i2, max_iter);
+		//printf("i1:%d - i2:%d - maxiter:%d\n", i1, i2, max_iter);
 
 		for (int i = 1; i < max_iter - 1; i++) {
 			if (v1[i] == v2[i]){
@@ -255,24 +261,13 @@ int			main(void) {
 
 		ref++;
 	}
-	//free(v2);
-	/*for (int i = 0; i < i1; i++) {
-			printf("index %d: %d\n", i, v1[i]);
-		}
-		for (int i = 0; i < i2; i++) {
-			printf("index %d: %d\n", i, v2[i]);
-		}*/
 
 	write(1,"---\n", 4);
-
-	//exclude_line(ah, 2);
-	
-
+	printf("Total de caminhos %d:\n", ah->qpaths);
 	for (int i = 0; i < ah->qpaths; i++) {
         printf("%s\n", ah->paths[i]);
     }
 
-	
 
 	kill_all(ah);
 	return 0;
