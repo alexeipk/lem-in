@@ -35,6 +35,8 @@ int				ft_strlen(const char *s);
 char			*ft_strdup(const char *s1);
 char 			*ft_strchr(const char *str, int ch);
 char 			*ft_strtok(char *str, const char *delim);
+size_t 			ft_strcspn(const char *str, const char *delim);
+char 			*ft_strtok_r(char *str, const char *delim, char **saveptr);
 
 //char	*ft_itoa(int nbr);
 void 			ft_intToStr(int num, char *str);
@@ -43,7 +45,8 @@ void			ft_strcat(char *dest, const char *src);
 int 			kill_all(t_anthill *ah);
 void 			valid_msg(t_anthill *ah, int code);
 void 			do_paths(t_anthill *ah, int matriz[N][N], int atual, int destino, int visitados[N], int caminho[], int index);
-//void removeDuplicatePaths(t_anthill* ah);
+void 			exclude_line(t_anthill* ah, int index);
+
 //static void		get_data(t_anthill *ah);
 
 

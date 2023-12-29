@@ -286,3 +286,56 @@ void ft_strcat(char *dest, const char *src) {
     // Adicionar o caractere nulo no final da string de destino
     *dest = '\0';
 }
+
+size_t ft_strcspn(const char *str, const char *delim) {
+    const char *s;
+    size_t count = 0;
+
+    // Para cada caractere em 'str'
+    for (; *str != '\0'; str++) {
+        // Para cada caractere em 'delim'
+        for (s = delim; *s != '\0'; s++) {
+            // Se o caractere atual em 'str' coincide com algum caractere em 'delim'
+            if (*str == *s) {
+                return count;
+            }
+        }
+        // Se não houver coincidência, incrementa o contador
+        count++;
+    }
+
+    return count;
+}
+
+
+char *ft_strtok_r(char *str, const char *delim, char **saveptr) {
+    char *token;
+    
+    if (str == NULL && *saveptr == NULL) {
+        return NULL;
+    }
+
+    if (str != NULL) {
+        *saveptr = str;
+    }
+
+    // Ignora os caracteres no início da str que são delimitadores
+    *saveptr += ft_strcspn(*saveptr, delim);
+
+    // Se atingir o final da str, retorna NULL
+    if (**saveptr == '\0') {
+        return NULL;
+    }
+
+    // Encontra o fim do token
+    token = *saveptr;
+    *saveptr += ft_strcspn(*saveptr, delim);
+
+    // Se não atingiu o final da str, substitui o delimitador por '\0'
+    if (**saveptr != '\0') {
+        *(*saveptr) = '\0';
+        (*saveptr)++;
+    }
+
+    return token;
+}
