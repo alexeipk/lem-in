@@ -3,7 +3,7 @@
 //int N = 0;
 
 int			main(void) {
-	t_anthill	*ah;	//Assign anthill structure
+	t_anthill	*ah;	// Assign anthill structure
 
 	ah = (t_anthill *)malloc(sizeof(t_anthill));
 
@@ -13,11 +13,10 @@ int			main(void) {
 	ah->qlinks = 0;
 	ah->qpaths = 0;
 
-	
-    ah->rooms = (char**)malloc(sizeof(char*) * BUFFER_SIZE); // Inicializa o vetor de strings
+    ah->rooms = (char**)malloc(sizeof(char*) * BUFFER_SIZE); 	// Inicializa o vetor de strings
 	ah->se_rooms = (char**)malloc(sizeof(char*) * BUFFER_SIZE); // Inicializa o vetor de strings
-	ah->links = (char**)malloc(sizeof(char*) * BUFFER_SIZE); // Inicializa o vetor de strings
-	ah->paths = (char**)malloc(sizeof(char*) * BUFFER_SIZE); // Inicializa o vetor de strings
+	ah->links = (char**)malloc(sizeof(char*) * BUFFER_SIZE); 	// Inicializa o vetor de strings
+	ah->paths = (char**)malloc(sizeof(char*) * BUFFER_SIZE); 	// Inicializa o vetor de strings
 
 	//Print for tests, must be erase REM
 	/*
@@ -71,10 +70,6 @@ int			main(void) {
 						previous_start_end = 0;
 					}
 					ah->qrooms++;
-					//if (previous_start_end == 1)
-					//	ah->start_room = ft_strdup(line);
-					//if (previous_start_end == 2)
-					//	ah->end_room = ft_strdup(line);
 				}
 
 				if (ft_count_hyphen(line) == 1){ // Find row with hyfen
@@ -93,16 +88,14 @@ int			main(void) {
 				//if (buffer[i] != '\n' && buffer[i] != '\v' && buffer[i] != '\r' && buffer[i] != '\0') {
 				if (buffer[i] > 31 && !ft_isdigit(buffer[i]))
 						row_just_numbers = 0;
-				//}
-				//printf("%d\n", row_just_numbers);
-				
+				//printf("%d\n", row_just_numbers);	
             }
         }
     }
 
 	//N = 4;
 
-	
+	//Ver sem rooms, sem formigas, sem inicio ou fim, sem solucao possivel, outros comentarios, 
 	//Validations
 	if (qtd_ants_file == 0) {valid_msg(ah, 1); return 0;}
 	if (qtd_ants_file > 1) {valid_msg(ah, 2); return 0;}
@@ -111,7 +104,6 @@ int			main(void) {
 	if (mark_end == 0) {valid_msg(ah, 5); return 0;}
 	if (mark_end > 1) {valid_msg(ah, 6); return 0;}
 	if (ah->qrooms < 2) {valid_msg(ah, 7); return 0;}
-
 
 	for (int i = 0; i < ah->qrooms - 1; i++) {
 		char *first_copy = ft_strdup(ah->rooms[i]); 
@@ -191,24 +183,19 @@ int			main(void) {
 
 
 
-	write(1, "Links: ", 7);
+	//write(1, "Links: ", 7);
 	ft_putnbr(ah->qlinks);
 	write(1, "\n", 1);
-	
-	for (int i = 0; i < ah->qlinks; i++) {
-        printf("%s\n", ah->links[i]);
-    }
+	for (int i = 0; i < ah->qlinks; i++) printf("%s\n", ah->links[i]);
 
 
 
 
 
+	// Criar matrix de i_paths com base nas informações dos quartos ordenados e nos i_paths encontrados
+	int path_matrix[N][N] = {0}; // Inicializa a matrix com zeros
 
-
-	// Criar matriz de caminhos com base nas informações dos quartos ordenados e nos caminhos encontrados
-	int matriz_de_caminhos[N][N] = {0}; // Inicializa a matriz com zeros
-
-	// Preenche a matriz com base nos links
+	// Preenche a matrix com base nos links
 	for (int i = 0; i < ah->qlinks; i++) {
 		char *link_copy = ft_strdup(ah->links[i]);
 		char *room1 = ft_strtok(link_copy, "-");
@@ -217,43 +204,37 @@ int			main(void) {
 		// Encontra os índices correspondentes aos quartos em sort_rooms
 		int index1 = -1, index2 = -1;
 		for (int j = 0; j < ah->qrooms; j++) {
-			 printf("Sort rooms: %s %d\n", sort_rooms[j],  ft_strlen(sort_rooms[j]));
-			 //printf("room1 : %s %d\n", room1, ft_strlen(room1));
-			 //printf("room2 : %s %d\n", room2, ft_strlen(room2));
-			if (strcmp(sort_rooms[j], room1) == 0) {
-				//write(1,"1\n",2);
+			//printf("Sort rooms: %s %d\n", sort_rooms[j],  ft_strlen(sort_rooms[j]));
+			//printf("room1 : %s %d\n", room1, ft_strlen(room1));
+			//printf("room2 : %s %d\n", room2, ft_strlen(room2));
+			if (strcmp(sort_rooms[j], room1) == 0) 
 				index1 = j;
-			}
-			if (strcmp(sort_rooms[j], room2) == 0) {
-				//write(1,"2\n",2);
+			
+			if (strcmp(sort_rooms[j], room2) == 0) 
 				index2 = j;
-			}
 		}
-		printf("%d\n", index1);
-		printf("%d\n", index2);
+		//printf("%d\n", index1);
+		//printf("%d\n", index2);
 
-		// Marca a matriz de caminhos com 1 para indicar um link
+		// Marca a matrix de i_paths com 1 para indicar um link
 		if (index1 != -1 && index2 != -1) {
-			matriz_de_caminhos[index1][index2 + 1] = 1;
-			//matriz_de_caminhos[index2][index1] = 1; // Considerando que a matriz é simétrica
+			path_matrix[index1][index2 + 1] = 1;
+			//path_matrix[index2][index1] = 1; // Considerando que a matrix é simétrica
 		}
 
 		free(link_copy);
 	}
 
-	// Imprime a matriz de caminhos
-	printf("Matriz de Caminhos:\n");
+	// Imprime a matrix de i_paths
+	/**/
+	printf("matrix de i_paths:\n");
 	for (int i = 0; i < ah->qrooms; i++) {
-		for (int j = 0; j < ah->qrooms; j++) {
-			printf("%d ", matriz_de_caminhos[i][j]);
-		}
+		for (int j = 0; j < ah->qrooms; j++) printf("%d ", path_matrix[i][j]);
 		printf("\n");
 	}
 
-	
-	
 
-	/*int matriz_de_caminhos[N][N] = {
+	/*int path_matrix[N][N] = {
         {0, 1, 1, 0, 0, 0},
         {0, 0, 1, 1, 0, 0},
         {0, 1, 0, 0, 1, 0},
@@ -261,7 +242,7 @@ int			main(void) {
         {0, 0, 0, 1, 0, 1},
 		{0, 0, 0, 0, 0, 0}
     };*/
-	/*int matriz_de_caminhos[N][N] = {
+	/*int path_matrix[N][N] = {
         {0, 1, 0, 0},
         {0, 0, 1, 0},
         {0, 0, 0, 1},
@@ -270,19 +251,16 @@ int			main(void) {
 	//N = 4;
 
     int origem = 0;
-    int destino = N - 1;
+    int destiny = N - 1;
 
-    int visitados[N] = {0};
-    int caminho[N];
+    int visits[N] = {0};
+    int i_path[N];
 
-    printf("Caminhos possíveis de %s para %s:\n", sort_rooms[0], sort_rooms[ah->qrooms - 1]);
-    do_paths(ah, matriz_de_caminhos, origem, destino, visitados, caminho, 0);
-    printf("Total de caminhos %d:\n", ah->qpaths);
+    printf("i_paths possíveis de %s para %s:\n", sort_rooms[0], sort_rooms[ah->qrooms - 1]);
+    do_paths(ah, path_matrix, origem, destiny, visits, i_path, 0);
+    printf("Total de i_paths %d:\n", ah->qpaths);
 
-	for (int i = 0; i < ah->qpaths; i++) {
-        printf("%s\n", ah->paths[i]);
-    }
-
+	for (int i = 0; i < ah->qpaths; i++) printf("%s\n", ah->paths[i]);
 
 
 	write(1,"---\n", 4);
@@ -336,7 +314,7 @@ int			main(void) {
 	}
 
 	write(1,"---\n", 4);
-	printf("Total de caminhos %d:\n", ah->qpaths);
+	printf("Total de i_paths %d:\n", ah->qpaths);
 	for (int i = 0; i < ah->qpaths; i++) {
         printf("%s\n", ah->paths[i]);
     }
@@ -349,75 +327,5 @@ int			main(void) {
 
 	return 0;
 }
-
-
-
-void exclude_line(t_anthill* ah, int index) {
-	free(ah->paths[index]);
-    for (int i = index; i <  ah->qpaths - 1; i++)  // Shifting pointers to fill deleted line space
-        ah->paths[i] = ah->paths[i + 1];
-    ah->qpaths--; // Reducing the total number of paths
-    ah->paths = (char **)realloc(ah->paths, ah->qpaths * sizeof(char *)); // Realloc to adjust pointer array size REM pode?
-}
-
-
-
-void do_paths(t_anthill *ah, int matriz[N][N], int atual, int destino, int visitados[N], int caminho[], int index) {
-	// Recursive function to generate all possible combinations of paths
-
-    visitados[atual] = 1;
-    caminho[index] = atual;
-
-    if (atual == destino) {
-		ah->qpaths++;
-		//printf("index %d \n", index);
-		ah->paths[ah->qpaths - 1] = (char *)malloc(((index + 2) * 2) * sizeof(char));  // Adjust size as needed
-		ah->paths[ah->qpaths - 1][0] = '\0';
-		for (int i = 0; i < index; i++) {
-			//printf("%d ", caminho[i]);
-			char temp[BUFFER_SIZE];
-			ft_intToStr(caminho[i], temp);
-            //sprintf(temp, "%d", caminho[i]);
-            
-            // Adds the element followed by a space, except for the last element
-           if (ah->paths[ah->qpaths - 1][0] != '\0') {
-				ft_strcat(ah->paths[ah->qpaths - 1], " ");
-			}
-			ft_strcat(ah->paths[ah->qpaths - 1], temp);
-			//ah->paths[ah->qpaths] = ft_itoa(caminho[i]);
-		}
-		char temp[BUFFER_SIZE];
-		ft_strcat(ah->paths[ah->qpaths - 1], " ");
-		ft_intToStr(N - 1, temp);
-		ft_strcat(ah->paths[ah->qpaths - 1], temp);
-		//printf("\n");
-    } else {
-        for (int i = 0; i < N; i++) {
-            if (matriz[atual][i] == 1 && !visitados[i]) {
-                do_paths(ah, matriz, i, destino, visitados, caminho, index + 1);
-            }
-        }
-    }
-
-    visitados[atual] = 0; // Unselect current node when going back in recursion
-}
-
-
-
-int find_room_index(char **rooms, int num_rooms, char *room_name) {
-    for (int i = 0; i < num_rooms; i++) {
-        if (strcmp(rooms[i], room_name) == 0) {
-            return i;
-        }
-    }
-    return -1; // Retorna -1 se o quarto não for encontrado
-}
-
-
-
-
-
-
-
 
 

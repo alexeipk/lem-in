@@ -8,8 +8,9 @@
 #include <stddef.h> // To size_t
 #include <stdbool.h> // To boolean
 
-#define N 4 // Número total de nós
+#define N 4 // Número total de nós, deve ser mudado para dinamico REM
 //extern int N;
+//existem muitas funcoes no C que precisam ser substituidas que no libft nao estavam boas
 
 
 #define BUFFER_SIZE 4096
@@ -45,9 +46,9 @@ void			ft_strcat(char *dest, const char *src);
 
 int 			kill_all(t_anthill *ah);
 void 			valid_msg(t_anthill *ah, int code);
-void 			do_paths(t_anthill *ah, int matriz[N][N], int atual, int destino, int visitados[N], int caminho[], int index);
+void 			do_paths(t_anthill *ah, int matrix[N][N], int origin, int destiny, int visits[N], int i_path[], int index);
 void 			exclude_line(t_anthill* ah, int index);
-int find_room_index(char **rooms, int num_rooms, char *room_name);
+int 			find_room_index(char **rooms, int num_rooms, char *room_name);
 
 //static void		get_data(t_anthill *ah);
 
