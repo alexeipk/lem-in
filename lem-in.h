@@ -19,7 +19,6 @@ typedef struct 	s_anthill {
 	int 		qrooms; 	// qtd of rooms
 	char 		**rooms; 	// rooms list
 	char 		**se_rooms;	// start and end rooms list index
-	//char 		**sort_rooms; 	// rooms list
 	int 		qlinks; 	// qtd of links
 	char 		**links; 	// links list
 	int 		qpaths; 	// qtd of paths
@@ -48,6 +47,7 @@ int 			kill_all(t_anthill *ah);
 void 			valid_msg(t_anthill *ah, int code);
 void 			do_paths(t_anthill *ah, int matriz[N][N], int atual, int destino, int visitados[N], int caminho[], int index);
 void 			exclude_line(t_anthill* ah, int index);
+int find_room_index(char **rooms, int num_rooms, char *room_name);
 
 //static void		get_data(t_anthill *ah);
 
