@@ -131,6 +131,9 @@ int			main(void) {
 	//write(1, "Ants: ", 6);
 	ft_putnbr(ah->qants);
 	write(1, "\n", 1);
+
+
+
 	
 	/*
 	write(1, "Rooms: ", 7);
@@ -164,21 +167,32 @@ int			main(void) {
     }
 
 	//Do rooms sort: start - other - end
-	char **sort_rooms = (char **)malloc(sizeof(char *) * ah->qrooms);
+	ah->sort_rooms = (char **)malloc(sizeof(char *) * ah->qrooms);
 	int index_sort = 0;
 	for (int i = 0; i < ah->qrooms; i++) {
 		char *temp = ft_strdup(ah->rooms[i]);
 		char *first = strtok(temp, " ");
 
 		if (ft_atoi(ah->se_rooms[i]) == 1) 
-			sort_rooms[0] = ft_strdup(first);  
+			ah->sort_rooms[0] = ft_strdup(first);  
 		else if (ft_atoi(ah->se_rooms[i]) == 0) 
-			sort_rooms[++index_sort] = ft_strdup(first);  
+			ah->sort_rooms[++index_sort] = ft_strdup(first);  
 		else if (ft_atoi(ah->se_rooms[i]) == 2) 
-			sort_rooms[ah->qrooms - 1] = ft_strdup(first); 
+			ah->sort_rooms[ah->qrooms - 1] = ft_strdup(first); 
 		free(temp);
 	}
-	for (int i = 0; i < ah->qrooms; i++) printf("Sort rooms: %s\n", sort_rooms[i]);
+	for (int i = 0; i < ah->qrooms; i++) printf("Sort rooms: %s\n", ah->sort_rooms[i]);
+
+
+
+
+	// Put all ants into start room
+	ah->ants = (t_ant *)malloc(ah->qants * sizeof(t_ant));
+	for (int i = 0; i < ah->qants; i++) {
+		ah->ants[i].currentRoom = 0;
+        printf("Formiga %d está na sala %d\n", i + 1, ah->ants[i].currentRoom);
+    }
+	
 
 
 
@@ -201,16 +215,16 @@ int			main(void) {
 		char *room1 = ft_strtok(link_copy, "-");
 		char *room2 = ft_strtok(link_copy, "-");
 
-		// Encontra os índices correspondentes aos quartos em sort_rooms
+		// Encontra os índices correspondentes aos quartos em ah->sort_rooms
 		int index1 = -1, index2 = -1;
 		for (int j = 0; j < ah->qrooms; j++) {
-			//printf("Sort rooms: %s %d\n", sort_rooms[j],  ft_strlen(sort_rooms[j]));
+			//printf("Sort rooms: %s %d\n", ah->sort_rooms[j],  ft_strlen(ah->sort_rooms[j]));
 			//printf("room1 : %s %d\n", room1, ft_strlen(room1));
 			//printf("room2 : %s %d\n", room2, ft_strlen(room2));
-			if (strcmp(sort_rooms[j], room1) == 0) 
+			if (strcmp(ah->sort_rooms[j], room1) == 0) 
 				index1 = j;
 			
-			if (strcmp(sort_rooms[j], room2) == 0) 
+			if (strcmp(ah->sort_rooms[j], room2) == 0) 
 				index2 = j;
 		}
 		//printf("%d\n", index1);
@@ -255,8 +269,9 @@ int			main(void) {
 
     int visits[N] = {0};
     int i_path[N];
+	
 
-    printf("i_paths possíveis de %s para %s:\n", sort_rooms[0], sort_rooms[ah->qrooms - 1]);
+    printf("i_paths possíveis de %s para %s:\n", ah->sort_rooms[0], ah->sort_rooms[ah->qrooms - 1]);
     do_paths(ah, path_matrix, origem, destiny, visits, i_path, 0);
     printf("Total de i_paths %d:\n", ah->qpaths);
 
@@ -319,13 +334,33 @@ int			main(void) {
         printf("%s\n", ah->paths[i]);
     }
 
+	
 
-	for (int i = 0; i < ah->qrooms; i++) // Libera a memória alocada para o vetor de strings
-        free(sort_rooms[i]);
-    free(sort_rooms); // Libera a memória alocada para o vetor de strings
-	kill_all(ah);
+
+	moveAnts(ah);
+
+
+
+
+	
+
+	kill_all(ah, 1);
 
 	return 0;
 }
 
 
+void moveAnts(t_anthill *ah) {
+    // Implemente a lógica de movimentação das formigas aqui
+    // Use a lista de caminhos (i_path) e atualize a posição das formigas
+    // Imprima os movimentos conforme as formigas se movem
+    // Considere que em cada sala só pode haver uma formiga
+
+	
+
+	for (int i = 0; i < ah->qpaths; i++) {
+        printf("%s\n", ah->paths[i]);
+    }
+
+
+}

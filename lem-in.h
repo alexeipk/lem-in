@@ -15,11 +15,17 @@
 
 #define BUFFER_SIZE 4096
 
+typedef struct Ant {
+    int 		currentRoom;
+} 				t_ant;
+
 typedef struct 	s_anthill {
 	int 		qants;  	// qtd of ants
+	t_ant 		*ants; 		// Ants vector
 	int 		qrooms; 	// qtd of rooms
 	char 		**rooms; 	// rooms list
 	char 		**se_rooms;	// start and end rooms list index
+	char 		**sort_rooms;
 	int 		qlinks; 	// qtd of links
 	char 		**links; 	// links list
 	int 		qpaths; 	// qtd of paths
@@ -44,11 +50,13 @@ char 			*ft_strtok_r(char *str, const char *delim, char **saveptr);
 void 			ft_intToStr(int num, char *str);
 void			ft_strcat(char *dest, const char *src);
 
-int 			kill_all(t_anthill *ah);
+int valid_input(t_anthill *ah);
+int 			kill_all(t_anthill *ah, int flag_all);
 void 			valid_msg(t_anthill *ah, int code);
 void 			do_paths(t_anthill *ah, int matrix[N][N], int origin, int destiny, int visits[N], int i_path[], int index);
 void 			exclude_line(t_anthill* ah, int index);
 int 			find_room_index(char **rooms, int num_rooms, char *room_name);
+void 			moveAnts(t_anthill *ah);
 
 //static void		get_data(t_anthill *ah);
 

@@ -1,7 +1,17 @@
 #include "lem-in.h"
 
 
-int kill_all(t_anthill *ah) {
+int kill_all(t_anthill *ah, int flag_all) {
+	
+	if (flag_all == 1) {
+		for (int i = 0; i < ah->qrooms; i++) // Libera a memória alocada para o vetor de strings
+			free(ah->sort_rooms[i]);
+		free(ah->sort_rooms); // Libera a memória alocada para o vetor de strings
+		
+		free(ah->ants);
+	}
+
+
     for (int i = 0; i < ah->qrooms; i++) 
         free(ah->rooms[i]);
     free(ah->rooms); 
@@ -15,6 +25,8 @@ int kill_all(t_anthill *ah) {
 	for (int i = 0; i < ah->qpaths; i++) 
         free(ah->paths[i]);
 	free(ah->paths); 
+
+	
 
     free(ah); 
     return 0;
@@ -36,7 +48,7 @@ void valid_msg(t_anthill *ah, int code) {
 
     if (code >= 1 && code <= 8) {
         printf("\x1b[31mValidation flag: %s\x1b[0m\n", messages[code - 1]);
-		kill_all(ah);  
+		kill_all(ah, 0);  
 	}
     else 
         printf("Unknown validation code: %d\n", code);
